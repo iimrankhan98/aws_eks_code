@@ -1,0 +1,90 @@
+AWS EKS Session 1-3   ######################################################################################################################################################################################################################################################################################
+
+eksctl create cluster
+
+eksctl create cluster -f mycluster.yml
+eksctl get cluster
+
+eksctl delete cluster --name my-test-cluster
+
+eksctl create cluster --name mybasic-cluster  --region ap-south-1  --version 1.25  --nodegroup-name ns-basic  --instance-types t2.medium  --nodes 3  --nodes-min 2  --nodes-max 5  --node-volume-size 40  --node-volume-type gp3  --ssh-access  --enable-ssm  --instance-name kube-workernode  --managed
+
+kubectl create deployment myweb  --image=vimal13/apache-webserver-php
+
+kubectl get pods -o wide
+kubectl exec -it myweb-764c9658b5-xzwwp  -- bash  
+kubectl scale deployment myweb  --replicas=5
+
+kubectl expose deployment myweb  --name=mylbsvc  --type=LoadBalancer  --port=80
+kubectl describe svc  mylbsvc
+
+eksctl scale  nodegroup  --cluster mybasic-cluster  --name ng-basic  --nodes 4
+
+eksctl delete cluster --name mybasic-cluster
+
+--kubeconfig  kube-cluster1.config
+
+CSI Driver (Container Storage Interface), provide storage of pod from aws ebs/efs
+kubectl get pv or pvc
+kubectl get sc
+
+kubectl get pods -n  kube-system
+
+kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.25"
+
+kubectl apply -f storage_class_add_for_ebs_csi.yml
+kubectl apply -f PVC_ebs_sc.yml
+kubectl apply -f mysql_db_secret.yml
+kubectl apply -f mysql_deploy_pvc_ebs.yml
+
+AWS EKS Session 4   ##############################################################################################################################################################################################################################################################
+
+eksctl create cluster --name basic-cluster  --region ap-south-1  --version 1.25  --nodegroup-name ns-basic  --instance-types t2.medium  --nodes 2  --nodes-min 1  --nodes-max 3  --node-volume-size 40  --node-volume-type gp3  --ssh-access  --enable-ssm  --instance-name kube-workernode  --managed
+eksctl delete cluster --name basic-cluster
+
+eksctl create cluster --name my-cluster-asg  --asg-access  --nodes-max 10  --nodes-min 2  --nodes 3  --node-type t2.medium  --nodegroup-name ng-A  --ssh-access  --enable-ssm   --version 1.25
+
+kubectl create deployment myd  --image=vimal13/apache-webserver-php
+kubectl scale  deployment myd  --replicas=5
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+kubectl get deployment metrics-server -n kube-system
+
+kubectl get pods -n  kube-system
+kubectl get deployment -n  kube-system
+
+	kubectl autoscale rc foo --max=5 --cpu-percent=80
+kubectl autoscale deployment myd  --max=5   --min=2  --cpu-percent=60
+kubectl get hpa
+
+curl -O examples/cluster-autoscaler-autodiscover.yaml   (Monitor Nodes Metrics)
+kubectl apply -f cluster-autoscaler-autodiscover.yaml   (Monitor Nodes Metrics)
+kubectl get pods -n kube-system
+
+echo 3 > /proc/sys/vm/drop_caches   (linux command for cache clear)
+
+kubectl -n kube-system annotate deployment.apps/cluster-autoscaler cluster-autoscaler.kubernetes.io/safe-to-evict="false"
+kubectl -n kube-system edit deployment.apps/cluster-autoscaler
+--balance-similar-node-groups
+--skip-nodes-with-system-pods=false
+
+kubectl -n kube-system set image deployment.apps/cluster-autoscaler cluster-autoscaler=us.gcr.io/k8s-artifacts-prod/autoscaling/cluster-autoscaler:v1.25.1
+kubectl -n kube-system logs -f deployment.apps/cluster-autoscaler
+kubectl apply -f  application/php-apache.yaml   (Pre created Deployment Resoure and HPA Pod)
+kubectl autoscale deployment php-apache --cpu-percent=35 --min=1 --max=10
+
+https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/   (Pods CPU load Increase URL)
+
+kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+kubectl get hpa php-apache --watch
+eksctl delete cluster  --name  my-cluster-asg
+
+AWS EKS Session 5   ########################################################################################################################################################################################################################################################################################
+
+eksctl utils update-cluster-logging --cluster my-cluster-a  --enable-types all  --approve  (enable CloudWatch logs)
+
+
+aws sts get-caller-identity (Get aws cli loggin user name)
+
+eksctl create cluster --name mycluster-1 --region ap-south-1 --version 1.25 --with-oidc --nodegroup-name myng-1 --nodes 3 --nodes-min 3 --nodes-max 5 --ssh-access --ssh-public-key myeks_key --enable-ssm --node-private-networking --managed --instance-types t3.medium --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access
+
