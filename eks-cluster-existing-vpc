@@ -36,3 +36,8 @@ eksctl create nodegroup \
   --node-private-networking 
 
 ######################################################################################
+## Role and Policy for master node ##
+https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html
+
+## Role and policy for node group ##
+https://docs.aws.amazon.com/eks/latest/userguide/create-node-role.html
