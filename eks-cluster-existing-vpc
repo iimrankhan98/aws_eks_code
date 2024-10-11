@@ -1,0 +1,37 @@
+## Create Master Node 
+eksctl create cluster \
+  --name basic-cluster \
+  --region ap-south-1 \
+  --version 1.31 \
+  --vpc-private-subnets subnet-0ce1a0c0dab13274f,subnet-062f4e292c6168db4 \
+  --node-private-networking \
+  --with-oidc \
+  --ssh-access \
+  --ssh-public-key myeks_key \
+  --enable-ssm \
+  --alb-ingress-access \
+  --without-nodegroup
+
+## Create Node Group
+
+eksctl create nodegroup \
+  --cluster basic-cluster \
+  --region ap-south-1 \
+  --name eks-ng-1 \
+  --nodes 2 \
+  --nodes-min 1 \
+  --nodes-max 3 \
+  --instance-name kube-workernod \
+  --instance-types m5.large \
+  --node-volume-type gp3 \
+  --node-volume-size 20 \
+  --node-ami-family Ubuntu2204 \
+  --ssh-access \
+  --managed \
+  --ssh-public-key myeks_key \
+  --asg-access \
+  --external-dns-access \
+  --full-ecr-access \
+  --alb-ingress-access \
+  --subnet-ids subnet-0ce1a0c0dab13274f,subnet-062f4e292c6168db4 \
+  --node-private-networking \
