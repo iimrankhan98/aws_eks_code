@@ -1,4 +1,4 @@
-## Create Master Node 
+#### Create Master Node #####
 eksctl create cluster \
   --name basic-cluster \
   --region ap-south-1 \
@@ -12,8 +12,7 @@ eksctl create cluster \
   --alb-ingress-access \
   --without-nodegroup
 
-## Create Node Group
-
+#### Create Node Group ####
 eksctl create nodegroup \
   --cluster basic-cluster \
   --region ap-south-1 \
@@ -34,4 +33,6 @@ eksctl create nodegroup \
   --full-ecr-access \
   --alb-ingress-access \
   --subnet-ids subnet-0ce1a0c0dab13274f,subnet-062f4e292c6168db4 \
-  --node-private-networking \
+  --node-private-networking 
+
+######################################################################################
