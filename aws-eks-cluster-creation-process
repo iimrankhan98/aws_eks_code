@@ -89,5 +89,9 @@ aws iam attach-role-policy \
 }
 
 # Attach policy in iam user 1.aws eks, 2.vpc, 3.iam, 4.cloudformation
+## aws alb installation
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.2/docs/install/iam_policy.json
+
+aws iam create-policy --policy-name AWSLoadBalancerControllerIAMPolicy --policy-document file://iam_policy.json
 
 
