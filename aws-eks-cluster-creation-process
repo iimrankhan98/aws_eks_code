@@ -88,5 +88,6 @@ aws iam attach-role-policy \
     ]
 }
 
+# Attach policy in iam user 1.aws eks, 2.vpc, 3.iam, 4.cloudformation
 
 
