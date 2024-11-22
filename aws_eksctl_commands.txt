@@ -20,6 +20,8 @@ kubectl describe svc  mylbsvc
 
 eksctl scale  nodegroup  --cluster mybasic-cluster  --name ng-basic  --nodes 4
 
+eksctl scale  nodegroup  --cluster visionway-eks-cluster  --name visionway-ng-1  --nodes 0
+
 eksctl delete cluster --name mybasic-cluster
 
 --kubeconfig  kube-cluster1.config
