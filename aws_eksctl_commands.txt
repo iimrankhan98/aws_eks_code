@@ -122,3 +122,9 @@ spec:
   controller: ingress.k8s.aws/alb
 #
 
+#### AWS EKS Session 12 ##################################################################################
+Setup CloudWatch Agent and Fluentd for metrics and logs collection on CloudWatch.
+
+curl https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/quickstart/cwagent-fluentd-quickstart.yaml | sed "s/{{cluster_name}}/visionway-eks-cluster/;s/{{region_name}}/ap-south-1/" > EnableContainerInsights.yaml
+
+
