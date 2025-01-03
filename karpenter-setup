@@ -182,7 +182,7 @@ helm install karpenter karpenter/karpenter \
   --set controller.resources.limits.cpu=1 \
   --set controller.resources.limits.memory=1Gi
 
-curl -O https://github.com/aws/karpenter-provider-aws/blob/v1.1.1/examples/v1/general-purpose.yaml
+curl -O https://github.com/aws/karpenter-provider-aws/blob/v1.1.1/examples/v1/general-purpose.yaml [modify yaml file]
 
 
 
