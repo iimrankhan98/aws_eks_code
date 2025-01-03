@@ -1,1 +1,40 @@
+# Step:1
+echo '{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ec2.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}' > node-trust-policy.json
+
+aws iam create-role --role-name "KarpenterNodeRole-visionway-eks-cluster" \
+    --assume-role-policy-document file://node-trust-policy.json
+
+# Step:2
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Principal": {
+                "Federated": "arn:aws:iam::650378210006:oidc-provider/oidc.eks.ap-south-1.amazonaws.com/id/1F69B2B1869074CDAF34003DCA8C25BE"
+            },
+            "Condition": {
+                "StringEquals": {
+                    "oidc.eks.ap-south-1.amazonaws.com/id/1F69B2B1869074CDAF34003DCA8C25BE:aud": [
+                        "sts.amazonaws.com"
+                    ]
+                }
+            }
+        }
+    ]
+}
+EOF
+
 
