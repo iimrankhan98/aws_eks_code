@@ -157,7 +157,7 @@ aws iam put-role-policy --role-name "KarpenterControllerRole-${CLUSTER_NAME}" \
     --policy-name "KarpenterControllerPolicy-${CLUSTER_NAME}" \
     --policy-document file://controller-policy.json
 
-Step:3
+# Step:3
 Add tag manually in subnet and security group [key=karpenter.sh/discovery and value=visionway-eks-cluster]
 
 for NODEGROUP in $(aws eks list-nodegroups --cluster-name "${CLUSTER_NAME}" --query 'nodegroups' --output text); do
@@ -167,6 +167,9 @@ for NODEGROUP in $(aws eks list-nodegroups --cluster-name "${CLUSTER_NAME}" --qu
         --nodegroup-name "${NODEGROUP}" --query 'nodegroup.subnets' --output text )
 done
 
+# Step:4
+helm repo add karpenter https://charts.karpenter.sh
+helm repo update
 
 
 
