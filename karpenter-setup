@@ -36,5 +36,6 @@ aws iam create-role --role-name "KarpenterNodeRole-visionway-eks-cluster" \
     ]
 }
 EOF
-
+aws iam create-role --role-name "KarpenterControllerRole-visionway-eks-cluster" \
+    --assume-role-policy-document file://controller-trust-policy.json
 
