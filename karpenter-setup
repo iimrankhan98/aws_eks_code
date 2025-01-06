@@ -178,7 +178,8 @@ helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter \
   --set controller.resources.requests.cpu=1 \
   --set controller.resources.requests.memory=1Gi \
   --set controller.resources.limits.cpu=1 \
-  --set controller.resources.limits.memory=1Gi
+  --set controller.resources.limits.memory=1Gi \
+  --set replicas=1
 
 curl -O https://github.com/aws/karpenter-provider-aws/blob/v1.1.1/examples/v1/general-purpose.yaml [modify yaml file]
 
